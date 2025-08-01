@@ -1,0 +1,10 @@
+services:
+  aurorapostgres:
+    image: postgres:latest
+    container_name: aurorapostgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
