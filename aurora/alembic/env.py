@@ -5,7 +5,8 @@ from models.config import Base
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from db import create_dsql_engine
+from db_aurora import create_dsql_engine
+from db_postgres import create_postgres_engine
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -26,7 +27,14 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 
-engine = create_dsql_engine()
+print("s.getenvB", os.getenv("DB"))
+
+if os.getenv("DB", "postgres") == "postgres":
+    engine = create_postgres_engine()
+elif os.getenv("DB") == "aurora":
+    engine = create_dsql_engine()
+else:
+    raise ValueError("Unsupported DB type specified in environment variable 'DB'")
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

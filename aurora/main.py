@@ -70,9 +70,9 @@ def main():
     start_time = datetime.now()
     logger.info(f"バッチジョブ開始: {start_time.isoformat()}")
     
-    logger.info("30秒間待機中...")
+    logger.info("5秒間待機中...")
     # 30秒間の待機
-    time.sleep(10)
+    time.sleep(5)
 
     try:
         # if os.getenv("NEED_MIGRATION") == "true":

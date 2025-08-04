@@ -45,8 +45,6 @@ def create_dsql_engine():
         connect_args["sslnegotiation"] = "direct"
     # Create the engine
     engine = create_engine(url, connect_args=connect_args, pool_size=5, max_overflow=10)
-    
-    print("engine-url", engine.url)
 
     # Adds a listener that creates a new token every time a new connection is created
     # in the SQLAlchemy engine
