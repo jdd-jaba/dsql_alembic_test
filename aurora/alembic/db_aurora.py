@@ -50,13 +50,10 @@ def create_dsql_engine():
     # in the SQLAlchemy engine
     @event.listens_for(engine, "do_connect")
     def add_token_to_params(dialect, conn_rec, cargs, cparams):
-        print("client:", client)
-        print("cluster_user:", cluster_user)
         # Generate a fresh token for this connection
         fresh_token = generate_token(client, cluster_user, cluster_endpoint, region)
-        print("fresh_token:", fresh_token)
         # Update the password in connection parameters
-        cparams["password"] = dsql_token
+        cparams["password"] = fresh_token
 
     # If we are using the non-admin user, we need to set the search path to use
     # 'myschema' instead of public whenever a connection is created.
