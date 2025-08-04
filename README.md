@@ -40,7 +40,13 @@ AWS_PROFILE=aws-kidsroom DB=aurora alembic upgrade head
 ### 3. アプリケーション(DB の CRUD)の実行
 
 ```bash
-python3 main.py
+DB=aurora|postgres python3 main.py
+```
+
+##### 実際に migrate を行う raw sql を確認したい場合：
+
+```あと
+alembic upgrade head --sql
 ```
 
 ## 使用方法
