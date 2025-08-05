@@ -7,6 +7,14 @@
 ### 1. 環境構築
 
 ```bash
+# まずはaws-kidsroom profileを設定してください。
+aws-azure-login --configure --profile aws-kidsroom
+
+# root certificateをダウンロード
+wget https://www.amazontrust.com/repository/AmazonRootCA1.pem -O aurora/root.pem
+```
+
+```bash
 # ローカルでPostgreSQLを起動
 docker-compose up -d
 
