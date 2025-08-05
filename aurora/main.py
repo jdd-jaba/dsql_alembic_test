@@ -5,6 +5,7 @@ from datetime import datetime
 import subprocess
 import time
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import text
 
 # Add current directory to sys.path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -104,14 +105,24 @@ def select_and_log_all(session, label="job_ocr テーブルの全データ (SQLA
                    f"ocr_result='{record.ocr_result}', pdf_page_num={record.pdf_page_num}, "
                    f"image_file_path='{record.image_file_path}', created_at={record.created_at})")
 
-def select_and_log_all(cursor, label="job_ocr テーブルの全データ (Raw SQL)"):
-    """Query and log all data using raw SQL"""
-    logger.info(label)
-    cursor.execute("SELECT * FROM job_ocr")
-    rows = cursor.fetchall()
-    logger.info(f"Found {len(rows)} records:")
-    for row in rows:
-        logger.info(f"  {row}")
+def select_all_job_ocr_raw_sql():
+    """Select all records from job_ocr table using raw SQL"""
+    try:
+        engine = get_database_engine()
+        
+        with engine.connect() as connection:
+            logger.info("Executing raw SQL: SELECT * FROM job_ocr")
+            result = connection.execute(text("SELECT * FROM job_ocr"))
+            rows = result.fetchall()
+            
+            logger.info(f"Found {len(rows)} records in job_ocr table:")
+            for row in rows:
+                logger.info(f"  {row}")
+            
+            return rows
+    except Exception as e:
+        logger.error(f"Error executing raw SQL query: {str(e)}")
+        return []
         
 def migrate_db():
     logger.info("データベースのマイグレーションを実行します")
@@ -157,6 +168,10 @@ def test_database_operations():
             # SELECT again to show deleted data
             # logger.info("6. SELECT Operation (after delete):")
             # select_and_log_all(session, "After deletion verification")
+            
+            # Execute raw SQL query to select all records from job_ocr table
+            # logger.info("=== Executing raw SQL query ===")
+            # select_all_job_ocr_raw_sql()
             
         logger.info("All database operations completed successfully!")
         return True
